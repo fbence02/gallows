@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="hu">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,17 +7,15 @@
     <script src="scrips.js" defer></script>
     <title>Akasztófa</title>
 </head>
-
 <body>
     <header>
         <a id="new-game">New Game</a>
     </header>
 
-    <main>
-
+    <main class="main">
         <div class="left">
             <p>Your guess</p>
-            <input type="text" id="letter-input" maxlength="1" />
+            <input type="text" id="letter-input" maxlength="1">
             <a id="enter-button">Enter</a>
             <p id="generated-word"></p>
             <p>Wrong guesses</p>
@@ -26,13 +23,11 @@
         </div>
 
         <div class="right">
-            <div id="hanger">
-                <img>
-            </div>
+            <img id="hanger-image" src="">
+            <p id="faults"></p>
         </div>
     </main>
 
     <footer></footer>
 </body>
-
 </html>

@@ -1,5 +1,11 @@
 let wordsNormal = ["TELEFON", "ALMA", "ARANY", "ABLAK", "RÉPA", "LABRADOR"];
-let wordsHard = ["HÁZTETŐ", "PROGRAM", "ESERNYŐ", "KANAPÉ", "KAUKÁZUS", "JÓS", "NEUROTRANS5ZMITTER", "RADIÁTOR", "NYÚL", "KEFÍR", "MOSONMAGYARÓVÁR"];
+let wordsHard = ["HÁZTETŐ", "PROGRAM", "ESERNYŐ", "KANAPÉ", "KAUKÁZUS", "JÓS", "NEUROTRANSZMITTER", "RADIÁTOR", "NYÚL", "KEFÍR", "MOSONMAGYARÓVÁR",
+    "SZIVARVÉG", "EGYETEM","PROGRAMOZÁS", "SZÁMÍTÓGÉP", "KÖNYVTÁR", "FÉNYKÉPEZŐGÉP", "KERTÉSZET", "VEGYSZERÉSZ", "AUTÓBUSZMEGÁLLÓ", 
+    "MÁGNESESÍTÉS"];
+let acceptedLetters = ["A", "Á", "B", "C", "D", "E", "É", "F", "G", "H",
+    "I", "Í", "J", "K", "L", "M", "N", "O", "Ó", "Ö",
+    "Ő", "P", "Q", "R", "S", "T", "U", "Ú", "Ü", "Ű",
+    "V", "W", "X", "Y", "Z"]
 let guessedLetters = [];
 let randomWord = "";
 let unknownWord = "";
@@ -13,13 +19,18 @@ document.getElementById("new-game").addEventListener("click", () => {
   randomWord = wordsHard[randIndex];
   unknownWord = "_".repeat(randomWord.length);
   document.getElementById("generated-word").textContent = unknownWord;
-  guessedLetters = [];
   document.getElementById("wrong-letters").textContent = "";
   document.getElementById("letter-input").value = "";
-  hangerImage.src = "";
+  hangerImage.src = "./images/akasztofa_0.png";
+  maxGuesses = 0;
   faultCounter.textContent = "11/0";
+  guessedLetters = [];
   inGame = true;
 });
+
+function isLetterCorrect(letter) {
+  if (acceptedLetters.con)
+}
 
 function hangerImageReplacer(maxGuesses) {
   hangerImage.src = `./images/akasztofa_${maxGuesses}.png`;
@@ -30,7 +41,8 @@ function guessHandler() {
   if (!inGame) {
     alert("nem vagy játékban!");
     return;
-  } 
+  }
+
   const letter = document.getElementById("letter-input").value.trim().toUpperCase();
   if (!letter || guessedLetters.includes(letter)) {
     document.getElementById("letter-input").value = "";
@@ -62,7 +74,7 @@ function guessHandler() {
   document.getElementById("letter-input").value = "";
 
   if (unknownWord === randomWord) {
-    alert("NYERTÉL!\nA szó " + randomWord + " volt.");
+    alert("NYERTÉL!");
     guessedLetters = [];
     document.getElementById("wrong-letters").textContent = "";
     maxGuesses = 0;

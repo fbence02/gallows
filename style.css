@@ -39,7 +39,7 @@ header a:hover {
     justify-content: flex-start;
     text-align: center;
     align-items: center;
-    width: 50%;
+    width: 60%;
     border-right: 5px solid black;
     gap: 15px;
 }
@@ -76,9 +76,9 @@ header a:hover {
     margin: 0;
     text-align: center;
     display: inline-block;
-    margin-right: -30px;
-    letter-spacing: 30px;
-    font-size: 50px;
+    margin-right: -15px;
+    letter-spacing: 15px;
+    font-size: 45px;
 }
 
 #wrong-letters {
@@ -91,13 +91,19 @@ header a:hover {
     justify-content: center;
     text-align: center;
     align-items: center;
-    width: 50%;
+    width: 40%;
     gap: 15px;
 }
 
 .right img {
     display: block;
     width: 200px;
+    height: 300px;
     border: 5px solid darkorange;
     border-radius: 10px;
+}
+
+#faults {
+    font-size: xx-large;
+    color: red;
 }

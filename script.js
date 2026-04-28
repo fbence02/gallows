@@ -12,37 +12,62 @@ let hangerImage = document.getElementById("hanger-image");
 let faultCounter = document.getElementById("faults");
 
 async function generateWordFromAI() {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`;
-    const prompt = "Írj nekem egy közepes nehézségű szót akasztófa játékhoz! Csak a szót írd le!";
+    const url = "http://localhost:11434/api/generate";
+
+    const promptText = `Generate one medium difficulty Hungarian noun for a hangman game. 
+    You must output ONLY a valid JSON object with a single key called "word".
+    Example: {"word": "SZÓ"}`;
+
+    const payload = {
+        model: "phi3",
+        prompt: promptText,
+        format: "json",
+        stream: false,
+        options: {
+            temperature: 0.2
+        }
+    };
 
     try {
         const response = await fetch(url, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                contents: [{ parts: [{ text: prompt }] }]
-            })
+            body: JSON.stringify(payload)
         });
         
         const data = await response.json();
         
-        if (data.candidates && data.candidates.length > 0) {
-            return data.candidates[0].content.parts[0].text.trim().toUpperCase();
+        if (data.response) {
+            const parsedData = JSON.parse(data.response);
+            
+            return parsedData.word.trim().toUpperCase().replace(/[^A-ZÁÉÍÓÖŐÚÜŰ]/g, "");
         } else {
-            throw new Error("No answer from AI.");
+            throw new Error("Nincs válasz az AI-tól.");
         }
     } catch (error) {
         console.error("Hiba a szó generálásakor:", error);
-        alert("Couldn't generate word with AI.");
-        return null;
+        return "KALAPÁCS";
     }
 }
 
 document.getElementById("new-game").addEventListener("click", async () => {
     inGame = false;
-    document.getElementById("generated-word").textContent = "Betöltés...";
+    document.getElementById("generated-word").style.color = "#000000";
+    
+    const frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
+    let loadingIndex = 0;
+    
+    const loadingInterval = setInterval(() => {
+        document.getElementById("generated-word").textContent = frames[loadingIndex];
+        loadingIndex++;
+        if (loadingIndex >= loadingTexts.length) {
+            loadingIndex = 0;
+        }
+    }, 100);
     
     const aiWord = await generateWordFromAI();
+    
+    clearInterval(loadingInterval);
     
     if (!aiWord) {
         document.getElementById("generated-word").textContent = "HIBA";
@@ -98,9 +123,11 @@ function guessHandler() {
         maxGuesses += 1;
         hangerImageReplacer(maxGuesses);
         if (maxGuesses === 11) {
-            alert("Vesztettél, a szó " + randomWord + " volt.");
+            document.getElementById("generated-word").textContent = randomWord;
+            document.getElementById("generated-word").style.color = "red";
             maxGuesses = 0;
             inGame = false;
+            return;
         }
     }
 
@@ -110,6 +137,7 @@ function guessHandler() {
     if (unknownWord === randomWord) {
         alert("NYERTÉL!");
         guessedLetters = [];
+        document.getElementById("generated-word").style.color = "#00ff0d";
         document.getElementById("wrong-letters").textContent = "";
         maxGuesses = 0;
         inGame = false;
